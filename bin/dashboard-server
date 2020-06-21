@@ -16,7 +16,7 @@ def main
   end
 
   Dir.chdir(dashboard_dir) do
-    system "RAILS_ENV=#{CDO.rack_env} bundle exec #{rerun} thin start -a #{CDO.dashboard_host} -p #{CDO.dashboard_port}"
+    system "RAILS_ENV=production bundle exec #{rerun} puma -t 1:5 -w 4 --preload -p #{CDO.dashboard_port}"
   end
 
   pids.each do |pid|

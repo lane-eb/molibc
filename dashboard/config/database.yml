@@ -100,4 +100,4 @@ test:
 
 production:
   <<: *mysql_defaults
-  database: dashboard_production
+  database: dashboard_development

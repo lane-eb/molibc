@@ -10,7 +10,7 @@ export default storybook => {
       <SignInInstructions
         sectionCode="ABCDEF"
         loginType={loginType}
-        studioUrlPrefix="http://localhost-studio.code.org:3000"
+        studioUrlPrefix="http://studio.molibc.com"
       />
     ));
   });

@@ -57,7 +57,7 @@ module Cdo
 
     def canonical_hostname(domain)
       # Allow hostname overrides
-      return override_dashboard if override_dashboard && domain == 'studio.code.org'
+      return override_dashboard if override_dashboard && domain == override_dashboard
       return override_pegasus if override_pegasus && domain == 'code.org'
 
       return "#{name}.#{domain}" if ['console', 'hoc-levels'].include?(name)
@@ -91,7 +91,7 @@ module Cdo
       host = canonical_hostname(domain)
       if (rack_env?(:development) && !https_development) ||
         (ENV['CI'] && host.include?('localhost'))
-        port = ['studio.code.org'].include?(domain) ? dashboard_port : pegasus_port
+        port = [override_dashboard].include?(domain) ? dashboard_port : pegasus_port
         host += ":#{port}"
       end
       host
@@ -103,7 +103,7 @@ module Cdo
     end
 
     def studio_url(path = '', scheme = '')
-      site_url('studio.code.org', path, scheme)
+      site_url(override_dashboard, path, scheme)
     end
 
     def code_org_url(path = '', scheme = '')

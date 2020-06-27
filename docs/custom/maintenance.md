@@ -34,3 +34,9 @@ tail -n 500 /var/log/messages
 tail -n 500 /root/code-dot-org-staging/nohup.out
 tail -f /var/log/nginx/error.log
 ```
+
+# Upgrade
+```shell script
+git pull origin master
+git checkout -- <the_changed_file> # Use the remote version
+```

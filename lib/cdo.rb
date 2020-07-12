@@ -58,25 +58,25 @@ module Cdo
     def canonical_hostname(domain)
       # Allow hostname overrides
       return override_dashboard if override_dashboard && domain == override_dashboard
-      return override_pegasus if override_pegasus && domain == 'code.org'
+      return override_pegasus if override_pegasus && domain == site_domain
 
       return "#{name}.#{domain}" if ['console', 'hoc-levels'].include?(name)
-      return domain if rack_env?(:production)
+      return domain
 
       # our HTTPS wildcard certificate only supports *.code.org
       # 'env', 'studio.code.org' over https must resolve to 'env-studio.code.org' for non-prod environments
-      sep = (domain.include?('.code.org')) ? '-' : '.'
+      sep = (domain.include?(".#{site_domain}")) ? '-' : '.'
       return "localhost#{sep}#{domain}" if rack_env?(:development)
       return "translate#{sep}#{domain}" if name == 'crowdin'
       "#{rack_env}#{sep}#{domain}"
     end
 
     def dashboard_hostname
-      canonical_hostname('studio.code.org')
+      canonical_hostname("studio.#{site_domain}")
     end
 
     def pegasus_hostname
-      canonical_hostname('code.org')
+      canonical_hostname(site_domain)
     end
 
     def hourofcode_hostname
@@ -84,7 +84,7 @@ module Cdo
     end
 
     def advocacy_hostname
-      canonical_hostname('advocacy.code.org')
+      canonical_hostname("advocacy.#{site_domain}")
     end
 
     def site_host(domain)
@@ -103,15 +103,17 @@ module Cdo
     end
 
     def studio_url(path = '', scheme = '')
-      site_url(override_dashboard, path, scheme)
+      # site_url(override_dashboard, path, scheme) # Lane replaced
+      "//#{site_domain}#{path}"
     end
 
     def code_org_url(path = '', scheme = '')
-      site_url('code.org', path, scheme)
+      # site_url(site_domain, path, scheme) # Lane replaced
+      "//#{override_pegasus}:#{pegasus_port}#{path}"
     end
 
     def advocacy_url(path = '', scheme = '')
-      site_url('advocacy.code.org', path, scheme)
+      site_url("advocacy.#{site_domain}", path, scheme)
     end
 
     def hourofcode_url(path = '', scheme = '')
@@ -120,7 +122,7 @@ module Cdo
 
     def curriculum_url(locale, path = '')
       locale = locale.downcase.to_s
-      uri = URI("https://curriculum.code.org")
+      uri = URI("https://curriculum.#{site_domain}")
       path = File.join(locale, path) if curriculum_languages.include? locale
       uri += path
       uri.to_s
@@ -138,7 +140,7 @@ module Cdo
     # to ensure that other systems (such as staging-next or Continuous Integration builds) that are operating
     # with RACK_ENV=test do not carry out actions on behalf of the managed test system.
     def test_system?
-      rack_env?(:test) && pegasus_hostname == 'test.code.org'
+      rack_env?(:test) && pegasus_hostname == "test.#{site_domain}"
     end
 
     # Sets the slogger to use in a test.

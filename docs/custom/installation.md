@@ -189,4 +189,6 @@ Then run `ln -s /root/code-dot-org-staging/apps/build/package blockly` if `dashb
 
 ## Change code to make website work well
 * Now you can see all links are not `example.com` but `localhost-studio.code.org`. 
-You should change: 
+You should change: `config.yml.erb` set `override_dashboard: example.com`.
+
+* Add `optimize_webpack_assets: true` to `locals.yml` and then run `npm run build:dist`.

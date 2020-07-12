@@ -1,3 +1,6 @@
+# Lane customized.
+site_domain: molibc.com
+
 # See config/README.md for info on this config format.
 
 env:
@@ -289,7 +292,7 @@ dcdo_table_name:       dcdo_<%=env%>
 gatekeeper_table_name: gatekeeper_<%=env%>
 
 # Poste (internal transactional email processing framework)
-poste_host: <%= code_org_url.sub('//', '') %>
+poste_host: molibc.com:3099
 poste_attachment_dir:
 poste_smtp_password: !Secret
 poste_smtp_server:   email-smtp.us-east-1.amazonaws.com
@@ -394,7 +397,7 @@ override_dashboard: studio.molibc.com
 dashboard_devise_secret:   !Secret
 dashboard_devise_pepper:   !Secret
 dashboard_secret_key_base: !Secret
-dashboard_host: 0.0.0.0
+dashboard_host: studio.molibc.com
 dashboard_port: 80
 dashboard_workers: 8
 dashboard_unicorn_name: dashboard
@@ -405,13 +408,13 @@ dashboard_sock:
 dashboard_enable_pegasus: false
 
 # Pegasus
-override_pegasus:
-pegasus_host:
+override_pegasus: molibc.com
+pegasus_host: molibc.com
 pegasus_sock:
-pegasus_port: 3000
+pegasus_port: 3099
 pegasus_unicorn_name: pegasus
 pegasus_workers: 8
-sinatra_session_secret:
+sinatra_session_secret: LJK242LFAKSJ234KAF
 
 # Configures Pegasus `settings.read_only`, which affects some (legacy) routes. Not actively used(?)
 read_only: false
